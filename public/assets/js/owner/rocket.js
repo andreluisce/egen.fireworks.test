@@ -1,38 +1,14 @@
 function Rocket(vector) {
     Particle.apply(this, [vector]);
-    this.firework = new Firework(Math.random() * 10 + 80);
+    this.firework = new Firework(Math.floor(Math.random() * (30 - 10) + 10));
 
 }
 
-Rocket.prototype = new Particle();
+Rocket.prototype = new Particle(new Vector2D(0, 0));
 
-
-/*
-Rocket.prototype.explode = function() {
-
-    for (var i = 0; i < count; i++) {
-        var particle = new Particle(this.pos);
-        var angle = Math.random() * Math.PI * 2;
-
-        // emulate 3D effect by using cosine and put more particles in the middle
-        var speed = Math.cos(Math.random() * Math.PI / 2) * 15;
-
-        particle.vel.x = Math.cos(angle) * speed;
-        particle.vel.y = Math.sin(angle) * speed;
-        particle.size = 10;
-        particle.shrink = Math.random() * 0.05 + 0.93;
-        particles.push(particle);
-    }
-};
-*/
 Rocket.prototype.render = function(c) {
-    if (!this.exists()) {
-        return;
-    }
-
     c.save();
-    //console.log(this.pos.y);
-    console.log(this.vel.y);
+
     if (this.vel.y >= 0) {
         this.size = 0;
     }
