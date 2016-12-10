@@ -1,9 +1,9 @@
-function Firework(numParticles, pos) {
+function Firework(numParticles, pos, hexColor) {
     this.particles = [];
     this.particlesCount = numParticles || 50;
     this.pos = pos || new Vector2D(0, 0);
-    this.particleScale = 25;
-    this.particleColor = Math.floor(Math.random() * 36) * 10;
+    this.particleScale = 45;
+    this.particleColor = Hex2RGB(hexColor, 10);
 }
 
 Firework.prototype.explode = function() {
@@ -16,6 +16,6 @@ Firework.prototype.explode = function() {
         var speed = Math.random() * 10;
 
         particle.speed = new Vector2D(Math.cos(angle) * speed, Math.sin(angle) * speed);
-        PARTICLES.push(particle);
+        PARTICLES_FIREWORKS.push(particle);
     }
 }

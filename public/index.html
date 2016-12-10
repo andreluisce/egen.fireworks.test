@@ -9,18 +9,30 @@
     <meta name="description" content="Test">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0,target-densitydpi=device-dpi, user-scalable=no" ">
 
-  
+  <script src="https://www.gstatic.com/firebasejs/3.6.3/firebase.js "></script>
+<script>
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyAOOFnfC7Rm2oIhpJBBmK3DG_54hOuMF8w ",
+    authDomain: "fireworks-test.firebaseapp.com ",
+    databaseURL: "https://fireworks-test.firebaseio.com ",
+    storageBucket: "fireworks-test.appspot.com ",
+    messagingSenderId: "253783561354 "
+  };
+  firebase.initializeApp(config);
+</script>
 
 </head>
 <body>
-<script src="assets/js/owner/globalVariables.js "></script>
-
+<script src="assets/js/vendor/hex2rgb.js "></script>
+<script src="assets/js/vendor/xml2json.js "></script>
+<script src="assets/js/owner/config.js "></script>
 <script src="assets/js/owner/vector2d.js "></script>
 <script src="assets/js/owner/particle.js "></script>
 <script src="assets/js/owner/firework.js "></script>
 <script src="assets/js/owner/rocket.js "></script>
 <script src="assets/js/owner/fountain.js "></script>
-  <script src="assets/js/owner/sketch.js "></script>
+  <script src="assets/js/owner/rendering.js "></script>
 </body>
 
 </html>

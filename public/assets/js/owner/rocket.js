@@ -1,37 +1,28 @@
-function Rocket(vector) {
-    //Particle.apply(this, [vector]);
-    this.firework = new Firework(Math.floor(Math.random() * (60 - 40) + 40));
-    this.speed = new Vector2D(0, Math.random() * -25 - 35);
-    this.scale = Math.random() * 15;
+function Rocket(pos, startTime, hexColor) {
+    Particle.apply(this, [pos]);
+    this.firework = new Firework(Math.floor(Math.random() * (50 - 40) + 40), null, hexColor);
+    this.speed = new Vector2D(Math.random() * (10 - (-10)) + (-10), Math.random() * (-60 - (-50)) + (-50));
+    this.scale = Math.random() * 35;
     this.gravity = new Vector2D(0, 0.9);
-    this.isActive = true;
+    this.isActive = false;
+    this.color = Hex2RGB("FFFFFF", 10);
+    this.startTime = startTime;
+    this.isLaunched = false;
 }
 
 Rocket.prototype = new Particle(new Vector2D(0, 0));
 
 Rocket.prototype.launch = function(x) {
-
-    PARTICLES.push(this);
+    if (!this.isLaunched && this.isActive) {
+        PARTICLES_FIREWORKS.push(this);
+        this.isLaunched = true;
+    }
 
 }
 Rocket.prototype.render = function(c) {
-    c.save();
-
     if (this.speed.y >= 0) {
         this.scale = 0;
     }
+    Particle.prototype.render.apply(this, [c]);
 
-    c.globalCompositeOperation = 'lighter';
-    var gradient = c.createRadialGradient(this.pos.x, this.pos.y, 0.1, this.pos.x, this.pos.y, this.scale / 2);
-    gradient.addColorStop(0.1, "rgba(255, 255, 255 ,1)");
-    gradient.addColorStop(1, "rgba(0, 0, 0, 1)");
-
-    c.fillStyle = gradient;
-
-    c.beginPath();
-    c.arc(this.pos.x, this.pos.y, Math.random() * this.scale / 2 + this.scale / 2, 0, Math.PI * 2, true);
-    c.closePath();
-    c.fill();
-
-    c.restore();
 };
