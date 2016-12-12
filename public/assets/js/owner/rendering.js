@@ -1,50 +1,59 @@
-function startConfig() {
-    for (var i = 0; i < CONFIG_JSON.length; i++) {
-        switch (CONFIG_JSON[i].type) {
-            case "Fountain":
-                FOUNTAINS.push(new Fountain(new Vector2D(window.innerWidth / 2 * parseFloat(CONFIG_JSON[i].Position.x), window.innerHeight * 1.025), parseInt(CONFIG_JSON[i].begin), parseInt(CONFIG_JSON[i].duration), CONFIG_JSON[i].colour));
-                break;
-            case "Rocket":
-                ROCKETS.push(new Rocket(new Vector2D(Math.random() * (window.innerWidth * 0.7 - window.innerWidth * 0.4) + window.innerWidth * 0.4, window.innerHeight, 0), parseInt(CONFIG_JSON[i].begin), CONFIG_JSON[i].colour));
-                break;
-            default:
-                break;
+(function(w) {
+    function startConfig() {
+        for (var i = 0; i < CONFIG_JSON.length; i++) {
+            switch (CONFIG_JSON[i].type) {
+                case "Fountain":
+                    FOUNTAINS.push(new Fountain(new Vector2D(window.innerWidth / 2 * parseFloat(CONFIG_JSON[i].Position.x), window.innerHeight * 1.025), parseInt(CONFIG_JSON[i].begin), parseInt(CONFIG_JSON[i].duration), CONFIG_JSON[i].colour));
+                    break;
+                case "Rocket":
+                    ROCKETS.push(new Rocket(new Vector2D(window.innerWidth / 2 * parseFloat(CONFIG_JSON[i].Position.x), window.innerHeight * 1), CONFIG_JSON[i].Velocity, parseInt(CONFIG_JSON[i].begin), CONFIG_JSON[i].colour));
+                    break;
+                default:
+                    break;
+            }
         }
     }
-}
 
-startConfig();
-
-function launchRockets() {
-    for (var i = 0; i < ROCKETS.length; i++) {
-        if (ROCKETS[i].isLaunched) {
-            ROCKETS.splice(i, 1);
-            continue;
+    function launchRockets() {
+        for (var i = 0; i < ROCKETS.length; i++) {
+            if (ROCKETS[i].isLaunched) {
+                ROCKETS.splice(i, 1);
+                continue;
+            }
+            ROCKETS[i].launch();
         }
-        ROCKETS[i].launch();
     }
-}
 
-function launchFountains() {
-    for (var i = 0; i < FOUNTAINS.length; i++) {
-        FOUNTAINS[i].launchUp();
+    function launchFountains() {
+        for (var i = 0; i < FOUNTAINS.length; i++) {
+            FOUNTAINS[i].launchUp();
+        }
     }
-}
 
-function startUp() {
-    document.body.appendChild(canvas);
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+    function startUp() {
+        document.body.appendChild(canvas);
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
 
-    setInterval(launchFountains, 100);
-    setInterval(launchRockets, 1500);
-}
+        setInterval(launchFountains, 100);
+        setInterval(launchRockets, 1500);
+    }
+
+    w.Rendering = {
+        startConfig: startConfig,
+        launchRockets: launchRockets,
+        launchFountains: launchFountains,
+        startUp: startUp
+    };
+
+})(window);
+
+Rendering.startConfig();
 
 window.onload = function() {
-    startUp();
+    Rendering.startUp();
 
     (function update(timestamp) {
-
         //Clear the canvas
         context.fillStyle = "rgba(0, 0, 0, .1)";
         context.fillRect(0, 0, canvas.width, canvas.height);
@@ -93,14 +102,12 @@ window.onload = function() {
             }
         }
 
-        //It doesn't allow the fireworks particles exceeds the Max
-        //it is for performance issue
+        //It doesn't allow the fireworks' particles exceeds the Max        
         while (PARTICLES_FIREWORKS.length > MAX_FIREWORKS) {
             PARTICLES_FIREWORKS.shift();
         }
 
-        //It doesn't allow the fountains particles exceeds the Max
-        //it is for performance issue
+        //It doesn't allow the fountains' particles exceeds the Max        
         while (PARTICLES_FOUNTAINS.length > MAX_FOUNTAINS) {
             PARTICLES_FOUNTAINS.shift();
         }
@@ -114,7 +121,7 @@ window.onload = function() {
             handle = requestAnimationFrame(update);
             FOUNTAINS = [];
             ROCKETS = [];
-            startConfig();
+            Rendering.startConfig();
             START_TIME = timestamp;
         }
     })();

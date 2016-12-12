@@ -21,6 +21,5 @@ Fountain.prototype.launchUp = function() {
             particle.speed = new Vector2D(Math.random() * 12 - 5, Math.random() * -15 - 15);
             PARTICLES_FOUNTAINS.push(particle);
         }
-        delete this;
     }
 };
